@@ -12,7 +12,7 @@ window.WEDDING = {
   phones: ["6945231917", "6958897497"],
 
   families: [
-    "Κυριάκου Σφάκη & Κυριακής Κοσμαδάκη",
+    "Κυριάκου Σηφάκη & Κυριακής Κοσμαδάκη",
     "Ευριδίκης Βερυκάκη & Μανώλη Κουσκουμβεκάκη",
     "Γιάννη Τσιχλάκη",
   ],
@@ -51,18 +51,18 @@ window.WEDDING = {
      λειτουργία και δεν στέλνει τίποτα.
      ----------------------------------------------------------------------- */
   rsvp: {
-    formAction: "https://docs.google.com/forms/d/e/ΒΑΛΤΕ_ΤΟ_ID/formResponse",
+    formAction: "https://docs.google.com/forms/d/e/1FAIpQLSdX12bRq-3MNoB5__Y6cZspbbNnLKxs6cXgkncfoK9pXha2cA/formResponse",
     fields: {
-      name: "entry.1000000001",
-      phone: "entry.1000000002",
-      attending: "entry.1000000003",
-      extraAdults: "entry.1000000004",
-      guestNames: "entry.1000000005",
-      children: "entry.1000000006",
-      childrenAges: "entry.1000000007",
-      menuVeg: "entry.1000000008",
-      menuVegan: "entry.1000000009",
-      allergies: "entry.1000000010",
+      name: "entry.1814478439",
+      phone: "entry.492545011",
+      attending: "entry.1079708846",
+      extraAdults: "entry.1688805192",
+      guestNames: "entry.1943821997",
+      children: "entry.497904636",
+      childrenAges: "entry.1542568277",
+      menuVeg: "entry.757721941",
+      menuVegan: "entry.1283365912",
+      allergies: "entry.1652498360",
     },
   },
 };
