@@ -197,10 +197,7 @@ p { margin: 0; text-wrap: pretty; }
 .stamp::before { /* εσωτερικός διακεκομμένος κύκλος */
   content: ""; position: absolute; inset: 25px; border-radius: 50%; border: 1px dashed rgba(196, 98, 63, .5);
 }
-.stamp::after { /* διπλό περίγραμμα, σαν χαραγμένη σφραγίδα */
-  content: ""; position: absolute; inset: 4px; border-radius: 50%; border: 1.5px solid var(--terra);
-  box-shadow: inset 0 0 0 2px var(--cream), inset 0 0 0 3px rgba(196, 98, 63, .5);
-}
+.stamp::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; border: 1.5px solid var(--terra); }
 .stamp__ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 26s linear infinite; }
 .stamp__ring text { font: 600 9.5px var(--sans); fill: var(--terra-deep); }
 .stamp__mark { fill: var(--terra); }
