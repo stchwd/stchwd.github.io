@@ -19,11 +19,14 @@
     const val = key in extras ? extras[key] : get(key);
     if (val != null) el.textContent = val;
   });
-  $(".nav__logo span").textContent = `${W.couple.groom[0]} & ${W.couple.bride[0]}`;
+  $(".nav__logo span").innerHTML =
+    `${esc(W.couple.groom[0])}<svg class="ico ico--heart" aria-hidden="true"><use href="#i-heart"/></svg>${esc(W.couple.bride[0])}`;
 
   const fmtPhone = (p) => p.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
+  const telIcon = '<svg class="ico ico--tel" aria-hidden="true"><use href="#i-phone"/></svg>';
   $$(".phones").forEach((el) => {
-    el.innerHTML = (W.phones || []).map((p) => `<a href="tel:+30${p}">${fmtPhone(p)}</a>`).join(" ή ");
+    const ico = el.closest("#rsvp") ? telIcon : "";
+    el.innerHTML = (W.phones || []).map((p) => `<a href="tel:+30${p}">${ico}${fmtPhone(p)}</a>`).join(" ή\u00A0");
   });
   const fillList = (id, arr) => { const ul = $(id); if (ul) ul.innerHTML = (arr || []).map((x) => `<li>${esc(x)}</li>`).join(""); };
 
@@ -517,30 +520,16 @@
         if (!b) return;
         api.set(api.value + Number(b.dataset.step));
         out.classList.remove("bump"); void out.offsetWidth; out.classList.add("bump");
-        if (name === "extraAdults" || name === "children") trimMenu();
         update();
       });
       steppers[name] = api;
     });
-    const menuKeys = ["menuVeg", "menuVegan"];
 
     const totals = () => {
       const adults = 1 + steppers.extraAdults.value;
       const kids = steppers.children.value;
       return { adults, kids, people: adults + kids };
     };
-    const menuSum = () => menuKeys.reduce((n, k) => n + steppers[k].value, 0);
-
-    // Αν μικρύνει η παρέα, κόβουμε πιάτα από το τέλος ώστε να μην ξεπερνούν τα άτομα
-    function trimMenu() {
-      let extra = menuSum() - totals().people;
-      for (const k of [...menuKeys].reverse()) {
-        if (extra <= 0) break;
-        const take = Math.min(extra, steppers[k].value);
-        steppers[k].set(steppers[k].value - take);
-        extra -= take;
-      }
-    }
 
     function update() {
       const { adults, kids, people } = totals();
@@ -550,19 +539,7 @@
       const ad = adults === 1 ? "1 ενήλικας" : `${adults} ενήλικες`;
       const kd = kids === 0 ? "" : kids === 1 ? " + 1 παιδί" : ` + ${kids} παιδιά`;
       $("#party-summary").innerHTML = `Σύνολο: <strong>${people} ${people === 1 ? "άτομο" : "άτομα"}</strong> <span>(${ad}${kd})</span>`;
-
-      // Δεν επιτρέπουμε περισσότερα πιάτα από άτομα
-      const sum = menuSum();
-      menuKeys.forEach((k) => {
-        $('[data-step="1"]', steppers[k].el).disabled = sum >= people || steppers[k].value >= steppers[k].max;
-      });
-      const status = $("#menu-status");
-      status.classList.toggle("is-done", sum > 0);
-      status.innerHTML = sum === 0
-        ? "Όλοι θα φάνε από το κανονικό μενού."
-        : `✓ ${sum} ${sum === 1 ? "άτομο" : "άτομα"} με ιδιαίτερο μενού, ${people - sum} με το κανονικό`;
     }
-    trimMenu();
     update();
 
     const isYes = () => {
@@ -612,8 +589,6 @@
         if (Number(fd.get("extraAdults")) > 0) add("guestNames", fd.get("guestNames"));
         add("children", fd.get("children"));
         if (Number(fd.get("children")) > 0) add("childrenAges", fd.get("childrenAges"));
-        menuKeys.forEach((k) => add(k, fd.get(k)));
-        add("allergies", fd.get("allergies"));
       }
 
       submit.disabled = true;
@@ -659,7 +634,6 @@
     $("#rsvp-again").addEventListener("click", () => {
       form.reset();
       Object.values(steppers).forEach((s) => s.set(0));
-      trimMenu();
       ifAttending.hidden = true;
       update();
       thanks.hidden = true;
